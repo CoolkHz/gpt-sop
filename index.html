@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f7f5ef">
+  <title>GPT 业务操作流程（内部 SOP）</title>
+  <meta name="description" content="GPT 业务操作流程 v1.0，涵盖接单、收款、充值、交付和售后。">
+  <style>
+    :root { color-scheme: light; --paper:#f7f5ef; --white:#fffefa; --ink:#202722; --muted:#6a7169; --line:#dcded4; --accent:#bb5e31; --accent-soft:#f5e6d8; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif; line-height:1.75; -webkit-font-smoothing:antialiased; }
+    a { color:#9b4f29; text-underline-offset:3px; }
+    a:hover { color:#783819; }
+    .site-header { height:70px; padding:0 clamp(22px,4vw,64px); display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); background:var(--paper); }
+    .brand { display:flex; align-items:center; gap:12px; color:var(--ink); font-size:14px; font-weight:800; letter-spacing:.08em; text-decoration:none; }
+    .brand-mark { width:29px; height:29px; display:grid; place-items:center; background:var(--ink); color:var(--paper); font-family:Georgia,serif; font-size:19px; line-height:1; border-radius:5px; }
+    .header-right { color:var(--muted); font-size:12px; letter-spacing:.09em; }
+    .layout { display:grid; grid-template-columns: minmax(215px, 252px) minmax(0, 900px); gap:clamp(36px,5vw,90px); max-width:1370px; margin:auto; padding:0 clamp(22px,4vw,64px); }
+    .sidebar { padding-top:58px; }
+    .sidebar-inner { position:sticky; top:30px; }
+    .toc-label { margin:0 0 17px; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.16em; }
+    .toc a { display:flex; gap:14px; padding:11px 10px 11px 0; border-bottom:1px solid var(--line); text-decoration:none; color:var(--muted); font-size:13px; line-height:1.5; transition:color .18s, padding-left .18s; }
+    .toc a span { color:var(--accent); font-family:Georgia,serif; font-size:12px; }
+    .toc a:hover, .toc a.active { color:var(--ink); padding-left:5px; }
+    .sidebar-foot { margin:24px 0 0; color:#8b9188; font-size:12px; line-height:1.7; }
+    .content { min-width:0; padding-bottom:110px; }
+    .hero { padding:70px 0 55px; border-bottom:1px solid var(--line); animation:enter .5s ease both; }
+    .eyebrow { color:var(--accent); font-size:12px; font-weight:800; letter-spacing:.2em; }
+    h1 { margin:22px 0 23px; max-width:800px; font-size:clamp(36px,5.1vw,66px); line-height:1.18; font-weight:800; letter-spacing:-.05em; }
+    .hero-summary { margin:0; max-width:620px; color:var(--muted); font-size:16px; line-height:1.8; }
+    .meta { display:flex; flex-wrap:wrap; gap:8px 25px; margin-top:30px; color:var(--muted); font-size:12px; }
+    .meta strong { color:var(--ink); font-weight:650; }
+    .document { padding-top:12px; font-size:15px; }
+    .document h2, .document h3, .document h4 { scroll-margin-top:25px; color:var(--ink); }
+    .document h2 { margin:82px 0 25px; padding-top:13px; border-top:2px solid var(--ink); font-size:clamp(26px,3vw,34px); line-height:1.35; letter-spacing:-.035em; }
+    .document h3 { margin:41px 0 16px; font-size:21px; line-height:1.4; }
+    .document h4 { margin:28px 0 11px; font-size:16px; }
+    .document p { margin:13px 0; }
+    .document ul, .document ol { padding-left:1.5em; margin:16px 0 24px; }
+    .document li { padding-left:.2em; margin:8px 0; }
+    .document li::marker { color:var(--accent); font-weight:700; }
+    .document blockquote { margin:25px 0 27px; padding:10px 0 10px 19px; border-left:3px solid var(--accent); color:var(--muted); font-size:13px; }
+    .document blockquote p { margin:0; }
+    .document table { width:100%; border-collapse:collapse; margin:22px 0 32px; font-size:13px; line-height:1.65; background:var(--white); }
+    .document th, .document td { padding:12px 13px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    .document th { color:var(--ink); background:#eaece5; font-size:12px; font-weight:750; white-space:nowrap; }
+    .document tr:last-child td { border-bottom:1px solid var(--line); }
+    .document img { display:block; width:auto; max-width:100%; height:auto; margin:14px 0 38px; border:1px solid var(--line); border-radius:8px; box-shadow:0 12px 34px rgba(42,45,35,.08); }
+    .document strong { font-weight:750; }
+    .document a { overflow-wrap:anywhere; }
+    .mobile-toc { display:none; }
+    .site-footer { padding:25px clamp(22px,4vw,64px); border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+    @keyframes enter { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    @media (max-width:850px) {
+      .site-header { height:62px; }
+      .layout { display:block; }
+      .sidebar { display:none; }
+      .hero { padding:52px 0 36px; }
+      .mobile-toc { display:block; margin:28px 0 8px; padding:14px 17px; border:1px solid var(--line); border-radius:7px; }
+      .mobile-toc summary { cursor:pointer; color:var(--ink); font-weight:700; }
+      .mobile-toc .toc { padding-top:8px; }
+      .document h2 { margin-top:65px; }
+    }
+    @media (max-width:580px) {
+      h1 { font-size:36px; }
+      .hero-summary { font-size:14px; }
+      .document { font-size:14px; }
+      .document table { display:block; overflow-x:auto; white-space:normal; }
+      .document th, .document td { min-width:100px; padding:9px 10px; }
+      .document img { margin-bottom:30px; }
+    }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .hero { animation:none; } .toc a { transition:none; } }
+  </style>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="#top"><span class="brand-mark">G</span> GPT 业务手册</a><span class="header-right">SOP · V1.0</span></header>
+  <div class="layout" id="top">
+    <aside class="sidebar"><div class="sidebar-inner"><p class="toc-label">目录 / CONTENTS</p><nav class="toc" aria-label="文档目录"><a href="#section-1"><span>01</span>文档信息</a>
+<a href="#section-4"><span>02</span>业务总览</a>
+<a href="#section-9"><span>03</span>接单流程</a>
+<a href="#section-13"><span>04</span>充值操作</a>
+<a href="#section-17"><span>05</span>售后与异常处理</a>
+<a href="#section-19"><span>06</span>常见疑问解答（FAQ）</a>
+<a href="#section-33"><span>07</span>记录与交接</a>
+<a href="#section-36"><span>08</span>8.0 焚决</a></nav><p class="sidebar-foot">更新于 2026-09-20<br>文档负责人 raco</p></div></aside>
+    <main class="content">
+      <section class="hero" aria-labelledby="page-title"><div class="eyebrow">OPERATIONS GUIDE / 业务流程</div><h1 id="page-title">GPT 业务操作流程<br>（内部 SOP）</h1><p class="hero-summary">从接单、收款到充值交付与售后，按步骤查阅完整操作流程。</p><div class="meta"><span>版本 <strong>v1.0</strong></span><span>负责人 <strong>raco</strong></span><span>更新 <strong>2026-09-20</strong></span></div></section>
+      <details class="mobile-toc"><summary>跳转到章节</summary><nav class="toc" aria-label="移动端文档目录"><a href="#section-1"><span>01</span>文档信息</a>
+<a href="#section-4"><span>02</span>业务总览</a>
+<a href="#section-9"><span>03</span>接单流程</a>
+<a href="#section-13"><span>04</span>充值操作</a>
+<a href="#section-17"><span>05</span>售后与异常处理</a>
+<a href="#section-19"><span>06</span>常见疑问解答（FAQ）</a>
+<a href="#section-33"><span>07</span>记录与交接</a>
+<a href="#section-36"><span>08</span>8.0 焚决</a></nav></details>
+      <article class="document"><blockquote>
+<p>部分内容由豆包生成</p>
+</blockquote>
+<h2 id="section-1">文档信息</h2><h3 id="section-2">适用范围</h3><p>本流程适用于团队内部所有参与 GPT 代充业务的人员（客服、操作员、负责人），用于规范从接单、收款、充值、交付到售后的完整操作路径。新成员按本流程即可独立完成标准订单；非标准订单须升级处理，不得自行变通。</p>
+<h3 id="section-3">版本与维护</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>当前版本</td>
+<td>v1.0</td>
+</tr>
+<tr>
+<td>文档负责人</td>
+<td>raco</td>
+</tr>
+<tr>
+<td>更新日期</td>
+<td>2026-09-20</td>
+</tr>
+</tbody></table>
+<h2 id="section-4">业务总览</h2><h3 id="section-5">业务范围</h3><p>本业务为客户提供 GPT 相关订阅或额度的代充服务，常见类型如下：</p>
+<table>
+<thead>
+<tr>
+<th>订单类型</th>
+<th>建议价格</th>
+<th>拿货价</th>
+<th>说明</th>
+<th>典型交付时长</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ChatGPT Plus 订阅</td>
+<td>139</td>
+<td>113</td>
+<td>为客户的 ChatGPT 账号充值 Plus 会员</td>
+<td>几分钟</td>
+</tr>
+<tr>
+<td>ChatGPT Pro 5x 订阅</td>
+<td>699</td>
+<td>650</td>
+<td>为客户的 ChatGPT 账号充值 5x 会员；<strong>升级 5x 需联系群主</strong></td>
+<td>几分钟</td>
+</tr>
+<tr>
+<td>ChatGPT Pro 20x 订阅</td>
+<td>1400</td>
+<td>1050</td>
+<td>仅限之前开过 20x 的客户续充；不能升级和新开，需<strong>联系群主获取</strong>，不要直接下单</td>
+<td>先确认后接单</td>
+</tr>
+<tr>
+<td>codex接码绑定手机</td>
+<td>10</td>
+<td>4</td>
+<td>接码拿货地址 <a href="https://catfk.com/shop/ymxx">https://catfk.com/shop/ymxx</a></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="section-6">下单与兑换地址</h3><ul>
+<li>下单地址：<a href="https://189990.xyz/">https://189990.xyz/</a></li>
+<li>兑换地址：<a href="https://codex.bugan.cn/">https://codex.bugan.cn/</a></li>
+</ul>
+<h3 id="section-7">产品规则</h3><ul>
+<li>Plus 到期后才可再开，不能直接续费。</li>
+<li>升级 5x 需联系群主进行升级。</li>
+<li>20x 需要之前开过的才能开，不能升级和新开，需联系群主获取，不要直接下单。</li>
+</ul>
+<h3 id="section-8">禁止事项</h3><ul>
+<li>禁止未收款先充值。</li>
+<li>禁止使用客户账号从事本订单以外的任何操作。</li>
+<li>禁止向客户承诺无法保证的到账时间。</li>
+<li>禁止私自修改退款标准。</li>
+</ul>
+<h2 id="section-9">接单流程</h2><h3 id="section-10">接单渠道</h3><ul>
+<li>抖音</li>
+<li>快手</li>
+<li>小红书</li>
+<li>闲鱼（封号严重，注意风险）</li>
+<li>各大校园渠道</li>
+<li>公众号</li>
+<li>视频号</li>
+<li>小众交友app</li>
+</ul>
+<h3 id="section-11">需求确认清单</h3><p>接单后逐项与客户确认，缺项不得进入下一步：</p>
+<ol>
+<li>充值类型：Plus / 新开 5x / 升级 5x / 20x（20x 仅限之前开过的客户）；</li>
+<li>价格与支付方式；</li>
+<li>客户提供 session(就是那一大长串代码)：在已<strong>登录</strong> ChatGPT 的浏览器中打开 chatgpt.com/api/auth/session，将内容发给客服。</li>
+</ol>
+<p>确认完毕后，先收款，再进行取货充值。</p>
+<h3 id="section-12">收款规则</h3><ol>
+<li>标准订单先收款后充值；老客户 / 大额订单是否放宽由负责人决定（风险自负！！！）。</li>
+<li>收款成功后自行做好订单记录，方便维护客户。</li>
+</ol>
+<h2 id="section-13">充值操作</h2><h3 id="section-14">充值前检查（每单必做）</h3><ol>
+<li>核对 session 与客户是否已付款。</li>
+</ol>
+<h3 id="section-15">执行充值</h3><ol>
+<li>前往 <a href="https://189990.xyz/">https://189990.xyz/</a> 进行取货。</li>
+<li>取到卡密后，前往 <a href="https://codex.bugan.cn/">https://codex.bugan.cn/</a> 兑换。</li>
+<li>在兑换网页检查 session，截图充值邮箱发给客户，确认是否为客户的充值账号。</li>
+<li>充值结果以后台及客户账号内实际到账为准。</li>
+</ol>
+<p><strong>输入卡密：</strong></p>
+<p><img src="assets/step-01.png" alt="输入卡密"></p>
+<p><strong>校验 session：</strong></p>
+<p><img src="assets/step-02.png" alt="校验session"></p>
+<p><strong>充值确认：</strong></p>
+<p><img src="assets/step-03.png" alt="充值界面"></p>
+<p>记得截图给客户确认核对邮箱，防止充错。没问题点击充值。</p>
+<h3 id="section-16">结果核验与交付</h3><ol>
+<li>操作员通过渠道后台核验到账状态。</li>
+<li>对到账结果留证，存入订单记录。</li>
+<li>通知客户&quot;已到账，查收&quot;。</li>
+<li>客户确认后做好订单记录，方便到期维护。</li>
+</ol>
+<h2 id="section-17">售后与异常处理</h2><h3 id="section-18">常见异常与处理</h3><table>
+<thead>
+<tr>
+<th>异常场景</th>
+<th>判断</th>
+<th>处理动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>充值后未到账</td>
+<td>渠道状态显示成功但账号内无到账</td>
+<td>让客户退出登录后重新登录 ChatGPT 即可</td>
+</tr>
+<tr>
+<td>充值失败</td>
+<td>1. 兑换平台提示换号<br/>2. 兑换平台提示金额不足</td>
+<td>1. 再试一次兑换；仍不行则让客户更换账号，充值不上说明该账号被风控<br/>2. 联系群主，属于卡台没钱</td>
+</tr>
+<tr>
+<td>客户要求退款</td>
+<td>客户明确申请</td>
+<td>除订阅掉了不退款，不保封号</td>
+</tr>
+<tr>
+<td>渠道故障 / 不可用</td>
+<td>连续多次充值失败</td>
+<td>联系群主</td>
+</tr>
+<tr>
+<td>客户被封号 / 订阅掉了</td>
+<td>客户账号被封禁或订阅失效</td>
+<td>让客户发邮件给 OpenAI 客服申请退款；申请成功后，这边收到退款后按天数退给客户。封号不保，订阅不会导致封号，都是客户自己的问题。</td>
+</tr>
+</tbody></table>
+<h2 id="section-19">常见疑问解答（FAQ）</h2><h3 id="section-20">到账相关</h3><h4 id="section-21">充值后多久到账？</h4><p>一般1-2分钟内到账，具体以客户账号内实际到账为准。</p>
+<h4 id="section-22">渠道显示成功，但客户说没到账？</h4><p>让客户退出登录后重新登录 ChatGPT 即可，绝大多数情况刷新后即可看到。</p>
+<h3 id="section-23">充值失败相关</h3><h4 id="section-24">兑换平台提示&quot;换号&quot;怎么办？</h4><p>先再试一次兑换；仍不行则让客户更换账号。充值不上说明该账号已被风控，不是我们的充值问题。</p>
+<h4 id="section-25">兑换平台提示&quot;金额不足&quot;怎么办？</h4><p>属于卡台没钱，联系群主处理即可。</p>
+<h3 id="section-26">售后与规则相关</h3><h4 id="section-27">客户要求退款怎么处理？</h4><p>除订阅掉了不退款，不保封号。退款标准由群主决定，代理不得私自承诺。</p>
+<h4 id="section-28">客户想升级 5x / 续充 20x？</h4><p>升级 5x 需联系群主；20x 仅限之前开过 20x 的客户续充，先确认后接单。</p>
+<h4 id="section-29">老客户可以先充值后付款吗？</h4><p>标准订单一律先收款后充值；老客户 / 大额订单是否放宽由代理决定，放宽的<strong>风险自负</strong>。</p>
+<h4 id="section-30">闲鱼渠道接单要注意什么？</h4><p>闲鱼封号严重，接单时注意保护账号，风险自担。</p>
+<h4 id="section-31">客户被封号 / 订阅掉了怎么办？</h4><p>让客户发邮件给 OpenAI 客服申请退款；申请成功后，这边收到退款后按天数退给客户。封号不保，订阅不会导致封号，都是客户自己的问题。</p>
+<h4 id="section-32">客户要开发票怎么处理？</h4><p>开票需收取实收金额 5 个点的手续费。例如 Plus 卖 139 元，手续费按 139 × 5% 收取，即 139 + 6.95 元。<strong>建议别赚这个手续费钱，该多少就多少</strong>。</p>
+<h2 id="section-33">记录与交接</h2><h3 id="section-34">订单记录要求</h3><ul>
+<li>每笔订单记录：订单编号、客户信息、类型、金额、收款时间、充值时间、交易单号、完成时间；</li>
+<li>记录当日事当日毕，禁止补录时凭记忆填写。</li>
+</ul>
+<h3 id="section-35">流程改进</h3><p>任何成员发现流程可优化或存在风险点，在 tg 群上提出并通知全员。</p>
+<h2 id="section-36">8.0 焚决</h2><p>焚决没想好怎么发，不然我自己都没得赚了</p>
+<p>谁有好意见？门槛费？</p>
+</article>
+    </main>
+  </div>
+  <footer class="site-footer">GPT 业务操作流程 · v1.0</footer>
+  <script>
+    const links = [...document.querySelectorAll('.sidebar .toc a')];
+    const targets = links.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (visible) links.forEach(link => link.classList.toggle('active', link.hash === '#' + visible.target.id));
+      }, { rootMargin:'-10% 0px -72% 0px' });
+      targets.forEach(target => observer.observe(target));
+    }
+  </script>
+</body>
+</html>
