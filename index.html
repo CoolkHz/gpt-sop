@@ -74,20 +74,22 @@
     }
     @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .hero { animation:none; } .toc a { transition:none; } }
   </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header"><a class="brand" href="#top"><span class="brand-mark">G</span> GPT 业务手册</a><span class="header-right">SOP · V1.0</span></header>
-  <div class="layout" id="top">
-    <aside class="sidebar"><div class="sidebar-inner"><p class="toc-label">目录 / CONTENTS</p><nav class="toc" aria-label="文档目录"><a href="#section-1"><span>01</span>文档信息</a>
+  <header class="site-header"><a class="brand" href="#top"><span class="brand-mark">G<span class="brand-dot">.</span></span><span>GPT <span class="brand-light">/ 操作手册</span></span></a><span class="header-right"><span class="status-dot"></span> 操作流程 <span class="header-separator">/</span> V1.0</span></header>
+  <div class="reading-progress" aria-hidden="true"><span id="progress-fill"></span></div>
+  <section class="hero" id="top" aria-labelledby="page-title"><div class="hero-inner"><div class="hero-copy"><div class="eyebrow"><span class="eyebrow-line"></span> FIELD GUIDE <span class="eyebrow-muted">/ INTERNAL SOP</span></div><h1 id="page-title">GPT 业务<br><span>操作流程</span></h1><p class="hero-summary">从接单、收款到充值交付与售后，<br>一份随时可查的完整操作手册。</p><div class="hero-bottom"><span class="hero-tag">内部 SOP</span><span>VERSION 1.0</span><span>UPDATED 2026.09.20</span></div></div><div class="hero-visual" aria-hidden="true"><div class="visual-grid"></div><div class="visual-ring visual-ring-one"></div><div class="visual-ring visual-ring-two"></div><span class="visual-glyph">S<span>O</span>P</span><span class="visual-coordinate">SYS / 01 — 08</span><span class="visual-star">✳</span></div></div></section>
+  <div class="layout">
+    <aside class="sidebar"><div class="sidebar-inner"><p class="toc-label">ON THIS PAGE <span>/ 目录</span></p><nav class="toc" aria-label="文档目录"><a href="#section-1"><span>01</span>文档信息</a>
 <a href="#section-4"><span>02</span>业务总览</a>
 <a href="#section-9"><span>03</span>接单流程</a>
 <a href="#section-13"><span>04</span>充值操作</a>
 <a href="#section-17"><span>05</span>售后与异常处理</a>
 <a href="#section-19"><span>06</span>常见疑问解答（FAQ）</a>
 <a href="#section-33"><span>07</span>记录与交接</a>
-<a href="#section-36"><span>08</span>8.0 焚决</a></nav><p class="sidebar-foot">更新于 2026-09-20<br>文档负责人 raco</p></div></aside>
+<a href="#section-36"><span>08</span>8.0 焚决</a></nav><p class="sidebar-foot"><span class="sidebar-foot-line"></span>文档负责人 <strong>raco</strong><br>最后更新 2026.09.20</p></div></aside>
     <main class="content">
-      <section class="hero" aria-labelledby="page-title"><div class="eyebrow">OPERATIONS GUIDE / 业务流程</div><h1 id="page-title">GPT 业务操作流程<br>（内部 SOP）</h1><p class="hero-summary">从接单、收款到充值交付与售后，按步骤查阅完整操作流程。</p><div class="meta"><span>版本 <strong>v1.0</strong></span><span>负责人 <strong>raco</strong></span><span>更新 <strong>2026-09-20</strong></span></div></section>
       <details class="mobile-toc"><summary>跳转到章节</summary><nav class="toc" aria-label="移动端文档目录"><a href="#section-1"><span>01</span>文档信息</a>
 <a href="#section-4"><span>02</span>业务总览</a>
 <a href="#section-9"><span>03</span>接单流程</a>
@@ -272,17 +274,22 @@
 </article>
     </main>
   </div>
-  <footer class="site-footer">GPT 业务操作流程 · v1.0</footer>
+  <footer class="site-footer"><span>GPT <span class="footer-light">/ 操作手册</span></span><span>VERSION 1.0 · 2026</span></footer>
   <script>
     const links = [...document.querySelectorAll('.sidebar .toc a')];
     const targets = links.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(entries => {
-        const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (visible) links.forEach(link => link.classList.toggle('active', link.hash === '#' + visible.target.id));
-      }, { rootMargin:'-10% 0px -72% 0px' });
-      targets.forEach(target => observer.observe(target));
+    const progress = document.getElementById('progress-fill');
+    let ticking = false;
+    function updateProgress() {
+      const available = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.transform = 'scaleX(' + (available > 0 ? window.scrollY / available : 0) + ')';
+      let active = -1;
+      targets.forEach((target, index) => { if (target.getBoundingClientRect().top <= 165) active = index; });
+      links.forEach((link, index) => link.classList.toggle('active', index === active));
+      ticking = false;
     }
+    window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; } }, { passive:true });
+    updateProgress();
   </script>
 </body>
 </html>
